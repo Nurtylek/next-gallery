@@ -1,0 +1,42 @@
+@use "variables";
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+*::after, *::before {
+    box-sizing: border-box
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+figure {
+    margin: 0;
+}
+
+.toolbar {
+    background: var(--gallery-black);
+}
+
+.main {
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    gap: 80px;
+}
+
+::selection {
+    background-color: #efbb35;
+    color: #fff;
+}

@@ -1,7 +1,7 @@
 import React, {FC, memo, MutableRefObject, useEffect, useRef, useState} from 'react';
 import styles from './toolbar.module.css';
 import Image from "next/image";
-import {useOnClickOutside} from "../../pages/hooks/hook";
+import {useOnClickOutside} from "../../hooks/hook";
 import Link from "next/link";
 
 type ToolbarProps = {

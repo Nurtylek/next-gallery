@@ -5,6 +5,17 @@
     padding-bottom: 32px;
 }
 
+.main__content figure {
+    width: 100%;
+    height: 100%;
+}
+
+.main__content figure img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
 .main__content * {
     border-radius: 8px;
 }
@@ -15,6 +26,7 @@
         width: 100%;
         margin: 0 auto;
         grid-template-columns: repeat(3, 1fr);
+        margin-top: 16px;
     }
 
     .main__content figure {

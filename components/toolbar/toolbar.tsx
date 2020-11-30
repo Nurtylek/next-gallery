@@ -38,6 +38,8 @@ export const Toolbar: FC<ToolbarProps> = memo(({photoChange}) => {
         setTimeout(() => searchFieldRef.current.focus(), 0)
     }
 
+    const isPla = typeof window !== "undefined";
+
     return (
         <>
             <header className={styles.header}>
@@ -65,7 +67,7 @@ export const Toolbar: FC<ToolbarProps> = memo(({photoChange}) => {
                     </li>
                 </ul>
             </header>
-            { isSearchOpen && (
+            { (isSearchOpen && isSearchOpen) && (
                 <div ref={divRef} className={styles.header__search}>
                     <input ref={searchFieldRef} type="text" className={styles.search__field} placeholder="Поиск" value={searchTerm} onChange={(event) => setSearchTerm(event?.currentTarget?.value)}/>
                     <div className={styles.search__category}>

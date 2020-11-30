@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import {AppShell} from "@/components/app-shell/app-shell";
 import styles from '../styles/Home.module.css';
-import Image from "next/image";
 
 export default function Home({photos}) {
     const [searchPhotos, setSearchPhotos] = useState([]);
@@ -26,21 +25,20 @@ export default function Home({photos}) {
 
     return (
         <AppShell title={'Create Next App'} search={searchTerm => search(searchTerm)}>
-            <section className={styles.main__content}>
-                {searchPhotos.map(photo => {
-                    return (
-                        <figure key={photo.id}>
-                            <Image
-                                objectFit="cover"
-                                src={photo.urls.regular}
-                                width={photo.width}
-                                height={photo.height}
-                                alt={photo.alt_description}
-                            />
-                        </figure>
-                    )
-                })}
-            </section>
+            {searchPhotos.length && (
+                <section className={styles.main__content}>
+                    {searchPhotos.map(photo => {
+                        return (
+                            <figure key={photo.id}>
+                                <img
+                                    src={photo.urls.regular}
+                                    alt={photo.alt_description}
+                                />
+                            </figure>
+                        )
+                    })}
+                </section>
+            )}
         </AppShell>
     )
 }

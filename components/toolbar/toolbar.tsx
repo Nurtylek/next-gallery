@@ -1,8 +1,8 @@
 import React, {FC, memo, MutableRefObject, useEffect, useRef, useState} from 'react';
 import styles from './toolbar.module.css';
 import Image from "next/image";
-import {useOnClickOutside} from "../../hooks/hook";
-import Link from "next/link";
+import {useOnClickOutside} from "../../lib/use-on-click-outside";
+import {NextLink} from "@/components/typography/typography";
 
 type ToolbarProps = {
     photoChange: (photo: string) => void
@@ -83,14 +83,3 @@ export const Toolbar: FC<ToolbarProps> = memo(({photoChange}) => {
     );
 });
 
-export function NextLink({href, children, ...rest}: {
-    href: string;
-    className: string;
-    children: React.ReactNode;
-}) {
-    return (
-        <Link href={href}>
-            <a {...rest}>{children}</a>
-        </Link>
-    );
-}

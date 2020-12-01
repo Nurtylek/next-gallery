@@ -8,18 +8,21 @@ export default function Home({photos}) {
     const [searchTerm, setSearchTerm] = useState('');
     const [searchPhotos, setSearchPhotos] = useState([]);
     const [page, setPage] = useState(1);
-    const observer = useRef<IntersectionObserver>();
     const [element, setElement] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const observer = useRef<IntersectionObserver>();
 
     const search = async () => {
         try {
+            setLoading(true);
             const res = await defaultQueryFn(`${process.env.NEXT_PUBLIC_API_URL}search/photos?client_id=${process.env.NEXT_PUBLIC_ACCESS_KEY}&query=${searchTerm}&page=${page}&per_page=12`)
             setSearchPhotos(photos => {
-                // debug purposes
                 return [...photos, ...res.results]
             });
+            setLoading(false);
         } catch (e) {
-            console.log({e})
+            console.log({e});
+            setLoading(false);
         }
     }
 
@@ -39,9 +42,11 @@ export default function Home({photos}) {
     useEffect(() => {
         observer.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting) {
-                setPage(oldPage => oldPage + 1);
+                if (!loading) {
+                    setPage(oldPage => oldPage + 1);
+                }
             }
-        }, {threshold: 0.5, rootMargin: '200px 0px 0px 0px'})
+        }, {threshold: 0})
     }, []);
 
     useEffect(() => {
@@ -57,7 +62,7 @@ export default function Home({photos}) {
                 currentObserver.unobserve(currentElement);
             }
         }
-    }, [element])
+    }, [element]);
 
     return (
         <AppShell title={'Create Next App'} search={searchTerm => setSearchTerm(searchTerm)}>
@@ -72,14 +77,15 @@ export default function Home({photos}) {
                                         alt={photo.alt_description}
                                         width={photo.width}
                                         height={photo.height}
+                                        loading="eager"
                                     />
                                 </figure>
                             )
                         })}
                     </section>
-                    <div ref={setElement}><button>Load More</button></div>
                 </>
             )}
+            <div ref={setElement} style={{height: 1}}/>
         </AppShell>
     )
 }

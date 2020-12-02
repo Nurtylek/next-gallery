@@ -1,8 +1,9 @@
 import React, {FC, memo, MutableRefObject, useEffect, useRef, useState} from 'react';
 import styles from './toolbar.module.css';
 import Image from "next/image";
-import {useOnClickOutside} from "../../lib/use-on-click-outside";
+import {useOnClickOutside} from "@/lib/use-on-click-outside";
 import {NextLink} from "@/components/typography/typography";
+import {AnimatePresence, motion} from "framer-motion";
 
 type ToolbarProps = {
     photoChange: (photo: string) => void
@@ -14,10 +15,11 @@ export const Toolbar: FC<ToolbarProps> = memo(({photoChange}) => {
         'WallpapersTextures & Patterns Nature Current Events Architecture Business & Work Film Animals Travel'
     )
     const divRef = useRef();
-    const searchFieldRef: MutableRefObject<HTMLInputElement> = useRef();
     useOnClickOutside(divRef, () => {
-        setIsSearchOpen(false);
-        setSearchTerm('')
+        if (divRef.current) {
+            setIsSearchOpen(false);
+            setSearchTerm('')
+        }
     });
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -35,10 +37,7 @@ export const Toolbar: FC<ToolbarProps> = memo(({photoChange}) => {
 
     const openSearchBar = () => {
         setIsSearchOpen(true);
-        setTimeout(() => searchFieldRef.current.focus(), 0)
     }
-
-    const isPla = typeof window !== "undefined";
 
     return (
         <>
@@ -67,18 +66,27 @@ export const Toolbar: FC<ToolbarProps> = memo(({photoChange}) => {
                     </li>
                 </ul>
             </header>
-            { (isSearchOpen && isSearchOpen) && (
-                <div ref={divRef} className={styles.header__search}>
-                    <input ref={searchFieldRef} type="text" className={styles.search__field} placeholder="Поиск" value={searchTerm} onChange={(event) => setSearchTerm(event?.currentTarget?.value)}/>
-                    <div className={styles.search__category}>
-                        {words.split(' ').map((word, index) => {
-                            return (
-                                <span key={`word${index}`}>{word} </span>
-                            )
-                        })}
-                    </div>
-                </div>)
-            }
+            <AnimatePresence initial={false}>
+                { isSearchOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 160, opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{duration: 0.2}}
+
+                        ref={divRef}
+                        className={styles.header__search}>
+                        <input type="text" className={styles.search__field} placeholder="Поиск" value={searchTerm} onChange={(event) => setSearchTerm(event?.currentTarget?.value)}/>
+                        <div className={styles.search__category}>
+                            {words.split(' ').map((word, index) => {
+                                return (
+                                    <span key={`word${index}`}>{word} </span>
+                                )
+                            })}
+                        </div>
+                    </motion.div>)
+                }
+            </AnimatePresence>
         </>
     );
 });

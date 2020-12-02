@@ -21,6 +21,9 @@
     color: var(--gallery-white);
     background: var(--gallery-black);
     padding: 16px;
+    height: 160px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .search__field {
@@ -81,7 +84,7 @@
     }
 
     .header__search {
-        padding: 16px 22px 36px;
+        /*padding: 16px 22px 36px;*/
     }
 
     .search__category {

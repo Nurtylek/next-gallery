@@ -3,6 +3,7 @@ import Image from "next/image";
 import {AppShell} from "@/components/app-shell/app-shell";
 import styles from '../styles/Home.module.css';
 import {defaultQueryFn} from "@/lib/api-hooks";
+import {AnimatePresence, motion} from "framer-motion";
 
 export default function Home({photos}) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -68,21 +69,41 @@ export default function Home({photos}) {
         <AppShell title={'Create Next App'} search={searchTerm => setSearchTerm(searchTerm)}>
             {searchPhotos.length && (
                 <>
-                    <section className={styles.main__content}>
-                        {searchPhotos.map(photo => {
-                            return (
-                                <figure key={photo.id + photo}>
-                                    <Image
-                                        src={photo.urls.regular}
-                                        alt={photo.alt_description}
-                                        width={photo.width}
-                                        height={photo.height}
-                                        loading="eager"
-                                    />
-                                </figure>
-                            )
-                        })}
-                    </section>
+                    <AnimatePresence initial={false}>
+                        <section className={styles.main__content}>
+                            {searchPhotos.map((photo, index) => {
+                                return (
+                                    <motion.figure
+                                        key={photo.id + photo + index}
+                                        variants={{
+                                            hidden: (index) => ({
+                                                opacity: 0,
+                                                y: -30 * index
+                                            }),
+                                            visible: (i) => ({
+                                                opacity: 1,
+                                                y: 0,
+                                                transition: {
+                                                    delay: i * 0.05
+                                                }
+                                            })
+                                        }}
+                                        initial="hidden"
+                                        animate="visible"
+                                        custom={index}
+                                    >
+                                        <Image
+                                            src={photo.urls.regular}
+                                            alt={photo.alt_description}
+                                            width={photo.width}
+                                            height={photo.height}
+                                            loading="eager"
+                                        />
+                                    </motion.figure>
+                                )
+                            })}
+                        </section>
+                    </AnimatePresence>
                 </>
             )}
             <div ref={setElement} style={{height: 1}}/>
